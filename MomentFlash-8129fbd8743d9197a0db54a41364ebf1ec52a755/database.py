@@ -1,4 +1,4 @@
-﻿import sqlite3
+import sqlite3
 import uuid
 from datetime import datetime
 import os
@@ -47,8 +47,8 @@ def create_project(pages_data, title=""):
     )
     for i, page in enumerate(pages_data):
         conn.execute(
-            "INSERT INTO pages (project_id, page_order, text_content, background_type, background_value, font_color, font_family, font_size) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-            (project_id, i, page.get("text", ""), page.get("bg_type", "color"), page.get("bg_value", "#ffffff"), page.get("font_color", "#000000"), page.get("font_family", "sans-serif"), page.get("font_size", 16)),
+            "INSERT INTO pages (project_id, page_order, text_content, background_type, background_value) VALUES (?, ?, ?, ?, ?)",
+            (project_id, i, page.get("text", ""), page.get("bg_type", "color"), page.get("bg_value", "#ffffff")),
         )
     conn.commit()
     conn.close()
@@ -97,7 +97,3 @@ def mark_scanned(project_id):
 
 
 init_db()
-
-
-
-

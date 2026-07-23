@@ -1,0 +1,26 @@
+01.去 railway.app （https://railway.app）注册（GitHub 登录即可）
+02.
+	cd C:\Users\34221\Documents\Codex\2026-07-23\xi
+	git config user.email "3422125518@qq.com"
+	git config user.name "xiaozhou-dou"
+	git commit -m "部署到 Railway"
+03.
+	git remote add origin https://github.com/xiaozhou-dou/仓库名.git
+	git branch -M main
+	git push -u origin main
+04.然后去 Railway → New Project → Deploy from GitHub repo → 选刚才推送的仓库，它就会自动构建部署
+05.部署成功后 Railway 会给你一个 xxx.railway.app 的域名，在域名网站中创建的二维码，别人微信扫码就能看到了
+06.# 修改后提交 + 自动部署到 Railway
+	git init
+	git add .
+	git config user.email "3422125518@qq.com"
+	git config user.name "xiaozhou-dou"
+	git commit -m "MomentFlash 初始部署"
+	# 连上 GitHub 仓库后
+	git remote add origin https://github.com/xiaozhou-dou/仓库名.git
+	git branch -M main
+	git push -u origin main
+
+
+环境配置：
+pip install qrcode --no-deps --target=.
