@@ -9,6 +9,8 @@ from werkzeug.utils import secure_filename
 # Try normal import first (works on cloud), fall back to _qrcode
 try:
     import qrcode as qrcode_maker
+    if not hasattr(qrcode_maker, "QRCode"):
+        raise ImportError("old qrcode without QRCode")
 except (ImportError, Exception):
     import importlib.util
     _qrcode_path = os.path.join(os.path.dirname(__file__), "_qrcode", "__init__.py")
@@ -16,6 +18,11 @@ except (ImportError, Exception):
     qrcode_maker = importlib.util.module_from_spec(_spec)
     sys.modules["qrcode"] = qrcode_maker
     _spec.loader.exec_module(qrcode_maker)
+    # Verify _qrcode has QRCode too
+    if not hasattr(qrcode_maker, "QRCode"):
+        import sys as _sys
+        _sys.stderr.write("FATAL: neither system qrcode nor _qrcode has QRCode attribute\n")
+        _sys.exit(1)
 
 import database as db
 
