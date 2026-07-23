@@ -268,7 +268,11 @@ function initSlideshow(pages) {
         slide.style.textShadow = "none";
       }
     } else if (page.background_type === "gradient" || page.background_type === "image") {
-      slide.style.backgroundImage = page.background_value || "linear-gradient(135deg, #667eea, #764ba2)";
+      if (page.background_type === "image") {
+        slide.style.backgroundImage = "url(" + (page.background_value || "") + ")";
+      } else {
+        slide.style.backgroundImage = page.background_value || "linear-gradient(135deg, #667eea, #764ba2)";
+      }
       slide.style.color = "#ffffff";
     }
 

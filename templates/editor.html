@@ -432,7 +432,10 @@ body {
       <img id="qrImage" alt="QR Code">
     </div>
     <div class="qr-url" id="qrUrl"></div>
-    <button class="btn btn-primary modal-close-btn" id="modalCloseBtn">我知道了</button>
+    <div style="display:flex;gap:8px;justify-content:center;margin-top:4px;">
+      <a class="btn btn-primary" id="qrDownloadBtn" style="text-decoration:none;">下载二维码</a>
+      <button class="btn modal-close-btn" id="modalCloseBtn">我知道了</button>
+    </div>
   </div>
 </div>
 
@@ -686,8 +689,8 @@ async function generateQR() {
       if (!data) return;
       pages.push({
         text: data.text,
-        bg_type: data.bgType === "image" ? "color" : data.bgType,
-        bg_value: data.bgType === "image" ? "#1a1a2e" : data.bgValue,
+        bg_type: data.bgType,
+        bg_value: data.bgType === "image" ? data.imageUrl : data.bgValue,
       });
     });
 
@@ -704,7 +707,10 @@ async function generateQR() {
     const result = await resp.json();
 
     if (result.qr_png_b64) {
-      document.getElementById("qrImage").src = "data:image/png;base64," + result.qr_png_b64;
+      const qrDataUrl = "data:image/png;base64," + result.qr_png_b64;
+      document.getElementById("qrImage").src = qrDataUrl;
+      document.getElementById("qrDownloadBtn").href = qrDataUrl;
+      document.getElementById("qrDownloadBtn").download = "MomentFlash_" + result.id + ".png";
       document.getElementById("qrUrl").textContent = result.view_url;
       document.getElementById("qrModal").classList.add("open");
     }
