@@ -1,0 +1,53 @@
+# Pip install leftovers
+bin/
+libs/
+qrcode/
+qrcode-*.dist-info/
+
+# Local qrcode fallback (not needed on cloud, pip installs it)
+_qrcode/
+
+# SSH key
+tunnel_key
+tunnel_key.pub
+
+# Database
+data.db
+*.db
+
+# Uploads directory content (keep dir with .gitkeep)
+uploads/*
+!uploads/.gitkeep
+
+# Temp scripts
+start_tunnel.py
+fix_*.py
+gen_*.py
+revert_*.py
+verify_*.py
+test_*.py
+
+# Logs
+server*.log
+server*.err
+
+# Python cache
+__pycache__/
+*.pyc
+.DS_Store
+*.egg-info/
+fix_*.py
+gen_*.py
+revert_*.py
+verify_*.py
+test_*.py
+
+# Logs
+server*.log
+server*.err
+
+# Python cache
+__pycache__/
+*.pyc
+.DS_Store
+*.egg-info/
