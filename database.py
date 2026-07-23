@@ -1,4 +1,4 @@
-import sqlite3
+﻿import sqlite3
 import uuid
 from datetime import datetime
 import os
@@ -30,7 +30,10 @@ def init_db():
             page_order INTEGER NOT NULL,
             text_content TEXT DEFAULT '',
             background_type TEXT DEFAULT 'color',
-            background_value TEXT DEFAULT '#ffffff'
+            background_value TEXT DEFAULT '#ffffff',
+            font_color TEXT DEFAULT '#000000',
+            font_family TEXT DEFAULT 'sans-serif',
+            font_size INTEGER DEFAULT 16
         );
     """)
     conn.commit()
@@ -47,8 +50,8 @@ def create_project(pages_data, title=""):
     )
     for i, page in enumerate(pages_data):
         conn.execute(
-            "INSERT INTO pages (project_id, page_order, text_content, background_type, background_value) VALUES (?, ?, ?, ?, ?)",
-            (project_id, i, page.get("text", ""), page.get("bg_type", "color"), page.get("bg_value", "#ffffff")),
+            "INSERT INTO pages (project_id, page_order, text_content, background_type, background_value, font_color, font_family, font_size) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+            (project_id, i, page.get("text", ""), page.get("bg_type", "color"), page.get("bg_value", "#ffffff"), page.get("font_color", "#000000"), page.get("font_family", "sans-serif"), page.get("font_size", 16)),
         )
     conn.commit()
     conn.close()
