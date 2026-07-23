@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>涓€闂?路 涓€娆℃€х暀瑷€</title>
+<title>一闪 · 一次性留言</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -465,29 +465,30 @@ body {
   color: var(--text-secondary);
   min-width: 30px;
   text-align: right;
-}</style>
+}
+</style>
 </head>
 <body>
 
 <!-- Toolbar -->
 <header class="toolbar">
-  <div class="toolbar-brand">涓€闂?<span>路</span> 涓€娆℃€х暀瑷€</div>
+  <div class="toolbar-brand">一闪 <span>·</span> 一次性留言</div>
   <div class="toolbar-actions">
-    <button class="btn btn-sm" id="addPageBtn" title="娣诲姞涓€椤?>+ 娣诲姞椤甸潰</button>
-    <button class="btn btn-primary" id="generateBtn">鐢熸垚浜岀淮鐮?/button>
+    <button class="btn btn-sm" id="addPageBtn" title="添加一页">+ 添加页面</button>
+    <button class="btn btn-primary" id="generateBtn">生成二维码</button>
   </div>
 </header>
 
 <!-- Main -->
 <div class="container">
-  <div class="section-title">椤甸潰鍒楄〃</div>
+  <div class="section-title">页面列表</div>
   <div class="page-list" id="pageList"></div>
 </div>
 
 <!-- Footer -->
 <div class="footer-actions">
-  <button class="btn" id="addPageBtn2">+ 娣诲姞椤甸潰</button>
-  <button class="btn btn-primary" id="generateBtn2">鐢熸垚浜岀淮鐮?/button>
+  <button class="btn" id="addPageBtn2">+ 添加页面</button>
+  <button class="btn btn-primary" id="generateBtn2">生成二维码</button>
 </div>
 
 <!-- Toast -->
@@ -496,15 +497,15 @@ body {
 <!-- QR Modal -->
 <div class="modal-overlay" id="qrModal">
   <div class="modal-box">
-    <div class="modal-title">浜岀淮鐮佸凡鐢熸垚</div>
-    <div class="modal-subtitle">鎵弿鍚庡唴瀹瑰皢姘镐箙澶辨晥锛屼粎鍙煡鐪嬩竴娆?/div>
+    <div class="modal-title">二维码已生成</div>
+    <div class="modal-subtitle">扫描后内容将永久失效，仅可查看一次</div>
     <div class="qr-image" id="qrImageContainer">
       <img id="qrImage" alt="QR Code">
     </div>
     <div class="qr-url" id="qrUrl"></div>
     <div style="display:flex;gap:8px;justify-content:center;margin-top:4px;">
-      <a class="btn btn-primary" id="qrDownloadBtn" style="text-decoration:none;">涓嬭浇浜岀淮鐮?/a>
-      <button class="btn modal-close-btn" id="modalCloseBtn">鎴戠煡閬撲簡</button>
+      <a class="btn btn-primary" id="qrDownloadBtn" style="text-decoration:none;">下载二维码</a>
+      <button class="btn modal-close-btn" id="modalCloseBtn">我知道了</button>
     </div>
   </div>
 </div>
@@ -512,14 +513,14 @@ body {
 <script>
 // --- Gradient Presets ---
 const GRADIENT_PRESETS = [
-  { name: "鏃ヨ惤", value: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)" },
-  { name: "娴锋磱", value: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)" },
-  { name: "妫灄", value: "linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)" },
-  { name: "鏆厜", value: "linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)" },
-  { name: "鐏劙", value: "linear-gradient(135deg, #fa709a 0%, #fee140 100%)" },
-  { name: "鏋佸厜", value: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)" },
-  { name: "鐑氮", value: "linear-gradient(135deg, #f6d365 0%, #fda085 100%)" },
-  { name: "娣辩┖", value: "linear-gradient(135deg, #0c3483 0%, #a2b6df 100%)" },
+  { name: "日落", value: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)" },
+  { name: "海洋", value: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)" },
+  { name: "森林", value: "linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)" },
+  { name: "暮光", value: "linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)" },
+  { name: "火焰", value: "linear-gradient(135deg, #fa709a 0%, #fee140 100%)" },
+  { name: "极光", value: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)" },
+  { name: "热浪", value: "linear-gradient(135deg, #f6d365 0%, #fda085 100%)" },
+  { name: "深空", value: "linear-gradient(135deg, #0c3483 0%, #a2b6df 100%)" },
 ];
 
 let pageCounter = 0;
@@ -572,53 +573,29 @@ function renderPage(data) {
 
   card.innerHTML = `
     <div class="page-card-header">
-      <span class="page-number">绗?${pageList.children.length + 1} 椤?/span>
-      <button class="btn btn-sm btn-danger remove-page-btn">鍒犻櫎</button>
+      <span class="page-number">第 ${pageList.children.length + 1} 页</span>
+      <button class="btn btn-sm btn-danger remove-page-btn">删除</button>
     </div>
     <div class="page-content-row">
       <div>
-        <textarea class="page-text-area" placeholder="鍦ㄨ繖椤靛啓涓嬩綘鎯宠鐨勮瘽鈥?>${escapeHtml(data.text)}</textarea>
+        <textarea class="page-text-area" placeholder="在这页写下你想说的话…">${escapeHtml(data.text)}</textarea>
       </div>
       <div>
         <div class="mini-preview" id="preview-${data.id}">
-          <div class="mini-preview-text" id="previewText-${data.id}">${escapeHtml(data.text) || "棰勮"}</div>
+          <div class="mini-preview-text" id="previewText-${data.id}">${escapeHtml(data.text) || "预览"}</div>
         </div>
         <div class="bg-options">
           <div class="bg-type-selector">
-            <button class="bg-type-btn ${data.bgType === 'color' ? 'active' : ''}" data-type="color">棰滆壊</button>
-            <button class="bg-type-btn ${data.bgType === 'gradient' ? 'active' : ''}" data-type="gradient">娓愬彉</button>
-            <button class="bg-type-btn ${data.bgType === 'image' ? 'active' : ''}" data-type="image">鍥剧墖</button>
+            <button class="bg-type-btn ${data.bgType === 'color' ? 'active' : ''}" data-type="color">颜色</button>
+            <button class="bg-type-btn ${data.bgType === 'gradient' ? 'active' : ''}" data-type="gradient">渐变</button>
+            <button class="bg-type-btn ${data.bgType === 'image' ? 'active' : ''}" data-type="image">图片</button>
           </div>
           <div class="bg-control" id="bgControl-${data.id}">
           </div>
         </div>
-        <div class="text-style-options">
-          <div class="section-title">文字样式</div>
-          <div class="text-style-controls">
-            <div class="text-style-row">
-              <label>颜色</label>
-              <input type="color" class="font-color-input" value="${data.fontColor}">
-            </div>
-            <div class="text-style-row">
-              <label>字体</label>
-              <select class="font-family-select">
-                <option value="sans-serif" ${data.fontFamily === 'sans-serif' ? 'selected' : ''}>无衬线字体</option>
-                <option value="serif" ${data.fontFamily === 'serif' ? 'selected' : ''}>衬线字体</option>
-                <option value="monospace" ${data.fontFamily === 'monospace' ? 'selected' : ''}>等宽字体</option>
-                <option value="cursive" ${data.fontFamily === 'cursive' ? 'selected' : ''}>手写体</option>
-                <option value="fantasy" ${data.fontFamily === 'fantasy' ? 'selected' : ''}>装饰体</option>
-              </select>
-            </div>
-            <div class="text-style-row">
-              <label>大小</label>
-              <input type="range" class="font-size-input" min="12" max="72" value="${data.fontSize}">
-              <span class="font-size-value">${data.fontSize}px</span>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
-  `;;
+  `;
 
   // --- Wire up events ---
 
@@ -632,7 +609,7 @@ function renderPage(data) {
   // Remove button
   card.querySelector(".remove-page-btn").addEventListener("click", () => {
     if (pageList.children.length <= 1) {
-      showToast("鑷冲皯淇濈暀涓€椤?);
+      showToast("至少保留一页");
       return;
     }
     card.remove();
@@ -650,34 +627,6 @@ function renderPage(data) {
     });
   });
 
-  
-  // Text style controls
-  const fontColorInput = card.querySelector(".font-color-input");
-  const fontFamilySelect = card.querySelector(".font-family-select");
-  const fontSizeInput = card.querySelector(".font-size-input");
-  const fontSizeValue = card.querySelector(".font-size-value");
-
-  if (fontColorInput) {
-    fontColorInput.addEventListener("input", () => {
-      data.fontColor = fontColorInput.value;
-      updatePreview(data);
-    });
-  }
-
-  if (fontFamilySelect) {
-    fontFamilySelect.addEventListener("change", () => {
-      data.fontFamily = fontFamilySelect.value;
-      updatePreview(data);
-    });
-  }
-
-  if (fontSizeInput) {
-    fontSizeInput.addEventListener("input", () => {
-      data.fontSize = parseInt(fontSizeInput.value);
-      fontSizeValue.textContent = data.fontSize + 'px';
-      updatePreview(data);
-    });
-  }
   // Initial bg control
   renderBgControl(data, card);
   updatePreview(data);
@@ -692,7 +641,7 @@ function renderPage(data) {
     const style = getPreviewStyle(d);
     preview.style.background = style.background;
     previewText.style.color = style.color;
-    previewText.textContent = d.text || "棰勮";
+    previewText.textContent = d.text || "预览";
   }
 
   // --- Helper: render bg control ---
@@ -734,7 +683,7 @@ function renderPage(data) {
       if (d.imageName) {
         label.innerHTML = `<span class="uploaded-image-name">${escapeHtml(d.imageName)}</span>`;
       } else {
-        label.textContent = "閫夋嫨鍥剧墖";
+        label.textContent = "选择图片";
       }
       const fileInput = document.createElement("input");
       fileInput.type = "file";
@@ -746,7 +695,7 @@ function renderPage(data) {
         const formData = new FormData();
         formData.append("file", file);
         try {
-          label.innerHTML = "<span style='font-size:12px;color:#999'>涓婁紶涓€?/span>";
+          label.innerHTML = "<span style='font-size:12px;color:#999'>上传中…</span>";
           const resp = await fetch("/api/upload", { method: "POST", body: formData });
           const result = await resp.json();
           if (result.url) {
@@ -757,8 +706,8 @@ function renderPage(data) {
             updatePreview(d);
           }
         } catch (err) {
-          showToast("鍥剧墖涓婁紶澶辫触");
-          label.textContent = "閫夋嫨鍥剧墖";
+          showToast("图片上传失败");
+          label.textContent = "选择图片";
         }
       });
       label.appendChild(fileInput);
@@ -766,7 +715,7 @@ function renderPage(data) {
       if (d.imageUrl) {
         const removeBtn = document.createElement("button");
         removeBtn.className = "btn btn-sm btn-danger";
-        removeBtn.textContent = "绉婚櫎";
+        removeBtn.textContent = "移除";
         removeBtn.style.marginLeft = "6px";
         removeBtn.addEventListener("click", () => {
           d.imageUrl = null;
@@ -790,7 +739,7 @@ function escapeHtml(str) {
 function renumberPages() {
   Array.from(pageList.children).forEach((card, i) => {
     const num = card.querySelector(".page-number");
-    if (num) num.textContent = `绗?${i + 1} 椤礰;
+    if (num) num.textContent = `第 ${i + 1} 页`;
   });
 }
 
@@ -801,7 +750,7 @@ async function generateQR() {
   const generateBtn2 = document.getElementById("generateBtn2");
   const btns = [generateBtn, generateBtn2];
 
-  btns.forEach(b => { b.disabled = true; b.innerHTML = '<span class="loading-spinner"></span> 鐢熸垚涓€?; });
+  btns.forEach(b => { b.disabled = true; b.innerHTML = '<span class="loading-spinner"></span> 生成中…'; });
 
   try {
     const pages = [];
@@ -813,14 +762,11 @@ async function generateQR() {
         text: data.text,
         bg_type: data.bgType,
         bg_value: data.bgType === "image" ? data.imageUrl : data.bgValue,
-        font_color: data.fontColor,
-        font_family: data.fontFamily,
-        font_size: data.fontSize,
       });
     });
 
     if (pages.length === 0) {
-      showToast("璇疯嚦灏戞坊鍔犱竴椤靛唴瀹?);
+      showToast("请至少添加一页内容");
       return;
     }
 
@@ -840,9 +786,9 @@ async function generateQR() {
       document.getElementById("qrModal").classList.add("open");
     }
   } catch (err) {
-    showToast("鐢熸垚澶辫触锛岃閲嶈瘯");
+    showToast("生成失败，请重试");
   } finally {
-    btns.forEach(b => { b.disabled = false; b.innerHTML = "鐢熸垚浜岀淮鐮?; });
+    btns.forEach(b => { b.disabled = false; b.innerHTML = "生成二维码"; });
   }
 }
 
@@ -908,8 +854,6 @@ function showToast(msg) {
 </script>
 </body>
 </html>
-
-
 
 
 
